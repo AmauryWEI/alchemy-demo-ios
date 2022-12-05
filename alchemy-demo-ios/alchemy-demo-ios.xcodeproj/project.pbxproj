@@ -7,18 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA06E347293E5B5400EA87EA /* alchemy_demo_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA06E346293E5B5400EA87EA /* alchemy_demo_iosApp.swift */; };
-		AA06E349293E5B5400EA87EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA06E348293E5B5400EA87EA /* ContentView.swift */; };
+		AA06E347293E5B5400EA87EA /* AlchemyDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA06E346293E5B5400EA87EA /* AlchemyDemoApp.swift */; };
+		AA06E349293E5B5400EA87EA /* NftListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA06E348293E5B5400EA87EA /* NftListView.swift */; };
 		AA06E34B293E5B5500EA87EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA06E34A293E5B5500EA87EA /* Assets.xcassets */; };
 		AA06E34E293E5B5500EA87EA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA06E34D293E5B5500EA87EA /* Preview Assets.xcassets */; };
+		AA622D2E293E91C900F89657 /* NftListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA622D2D293E91C900F89657 /* NftListViewModel.swift */; };
+		AA622D30293E920F00F89657 /* NftList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA622D2F293E920F00F89657 /* NftList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AA06E343293E5B5400EA87EA /* alchemy-demo-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "alchemy-demo-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA06E346293E5B5400EA87EA /* alchemy_demo_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alchemy_demo_iosApp.swift; sourceTree = "<group>"; };
-		AA06E348293E5B5400EA87EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA06E346293E5B5400EA87EA /* AlchemyDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlchemyDemoApp.swift; sourceTree = "<group>"; };
+		AA06E348293E5B5400EA87EA /* NftListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftListView.swift; sourceTree = "<group>"; };
 		AA06E34A293E5B5500EA87EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA06E34D293E5B5500EA87EA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA622D2D293E91C900F89657 /* NftListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftListViewModel.swift; sourceTree = "<group>"; };
+		AA622D2F293E920F00F89657 /* NftList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +55,10 @@
 		AA06E345293E5B5400EA87EA /* alchemy-demo-ios */ = {
 			isa = PBXGroup;
 			children = (
-				AA06E346293E5B5400EA87EA /* alchemy_demo_iosApp.swift */,
-				AA06E348293E5B5400EA87EA /* ContentView.swift */,
+				AA06E346293E5B5400EA87EA /* AlchemyDemoApp.swift */,
+				AA06E348293E5B5400EA87EA /* NftListView.swift */,
+				AA622D2D293E91C900F89657 /* NftListViewModel.swift */,
+				AA622D2F293E920F00F89657 /* NftList.swift */,
 				AA06E34A293E5B5500EA87EA /* Assets.xcassets */,
 				AA06E34C293E5B5500EA87EA /* Preview Content */,
 			);
@@ -137,8 +143,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA06E349293E5B5400EA87EA /* ContentView.swift in Sources */,
-				AA06E347293E5B5400EA87EA /* alchemy_demo_iosApp.swift in Sources */,
+				AA622D30293E920F00F89657 /* NftList.swift in Sources */,
+				AA06E349293E5B5400EA87EA /* NftListView.swift in Sources */,
+				AA622D2E293E91C900F89657 /* NftListViewModel.swift in Sources */,
+				AA06E347293E5B5400EA87EA /* AlchemyDemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 //
-//  alchemy_demo_iosApp.swift
+//  alchemy_demo_ios.swift
 //  alchemy-demo-ios
 //
 //  Created by Amaury WEI on 05.12.22.
@@ -8,10 +8,10 @@
 import SwiftUI
 
 @main
-struct alchemy_demo_iosApp: App {
+struct AlchemyDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NftListView()
         }
     }
 }
