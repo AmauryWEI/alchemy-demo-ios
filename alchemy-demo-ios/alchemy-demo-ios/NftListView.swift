@@ -12,8 +12,8 @@ struct NftListView: View {
     /// Stored NFTs list
     @ObservedObject var nftList = NftListViewModel()
     
-    /// Example of an ETH wallet address owning multiple NFTs
-    static let defaultEthAddress = "0xbe6b5dBBA3d59Fa6a0C3d5bB787aa5D5ee4F535d"
+    /// Example of an ETH wallet address owning multiple NFTs (Vitalik BUTERIN's address)
+    static let defaultEthAddress = "0xab5801a7d398351b8be11c439e05c5b3259aec9b"
     
     /// ETH wallet address (modified by the ethAddressForm)
     @State private var ethAddress: String = defaultEthAddress
@@ -70,7 +70,15 @@ struct NftListView: View {
     func fetchNfts() {
         // Dismiss the keyboard of the ETH Address TextField
         ethAddressIsFocused = false
-        nftList.fetchNfts(ethWalletAddress: ethAddress)
+        
+        // Create a dedicated Task as fetchNfts() is asynchronous
+        Task {
+            do {
+                try await nftList.fetchNfts(ethWalletAddress: ethAddress)
+            } catch let error {
+                print("ERROR: Failed to fetch NFTs: ", error)
+            }
+        }
     }
     
 }
