@@ -7,14 +7,22 @@
 
 import Foundation
 
+/// Standardized struct for a single NFT
+struct Nft {
+    /// Smart contract address of the NFT
+    var address: String
+    /// URL to the NFT
+    var image: URL
+}
+
 /// Storage for a list of NFTs
 struct NftList {
     /// NFTs are stored as an array of Strings
-    private(set) var nfts: [String] = [String]()
+    private(set) var nfts: [Nft] = [Nft]()
     
     /// Set the list of NFTs stored inside the list
     /// - Parameter nfts: NFTs to store inside the list
-    mutating func setNfts(_ nfts: [String]) {
+    mutating func setNfts(_ nfts: [Nft]) {
         self.nfts = nfts
     }
 }
