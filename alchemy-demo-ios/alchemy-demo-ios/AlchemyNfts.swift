@@ -19,6 +19,7 @@ struct AlchemyNfts: Codable {
 struct AlchemyNft: Codable {
     var contract: AlchemyContract
     var metadata: AlchemyMetadata
+    var error: String?
 }
 
 struct AlchemyContract: Codable {

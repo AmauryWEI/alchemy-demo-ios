@@ -35,7 +35,7 @@ class NftListViewModel: ObservableObject {
     /// - Throws: Errors of type `FetchNftsError`or `DecodingError`
     func fetchNfts(ethWalletAddress: String) async throws {
         // Create the proper URL using the private Alchemy API key and the specified ETH address
-        guard let nftsRequestUrl = URL(string: "https://eth-goerli.g.alchemy.com/v2/\(ALCHEMY_API_KEY)/getNFTs?owner=\(ethWalletAddress)") else { throw FetchNftsError.invalidUrl }
+        guard let nftsRequestUrl = URL(string: "https://eth-mainnet.g.alchemy.com/v2/\(ALCHEMY_API_KEY)/getNFTs?owner=\(ethWalletAddress)&excludeFilters[SPAM,AIRDROPS]") else { throw FetchNftsError.invalidUrl }
         
         // Perform the HTTPS request
         print("INFO: Performing HTTPS GET request: ", nftsRequestUrl.absoluteString)
@@ -48,13 +48,39 @@ class NftListViewModel: ObservableObject {
         print("INFO: NFTs retrieved: ", decodedNfts.totalCount)
         
         // Convert those Alchemy-based NFTs into custom NFT structures
-        let standardizedNfts = standardizeNfts(alchemyNfts: decodedNfts)
+        let filteredAlchemyNfts = filterInvalidNfts(alchemyNfts: decodedNfts)
+        let standardizedNfts = standardizeNfts(alchemyNfts: filteredAlchemyNfts)
         print("INFO: Valid NFTs: ", standardizedNfts.count)
         
         // Update the internal model (from the main thread)
         DispatchQueue.main.async {
             self.model.setNfts(standardizedNfts)
         }
+    }
+    
+    /// Filter invalid NFTs obtained from the Alchemy API.
+    /// NFTs considered invalid: `error` field is present, invalid image URL
+    func filterInvalidNfts(alchemyNfts: AlchemyNfts) -> AlchemyNfts {
+        let filteredNfts = alchemyNfts.ownedNfts.filter { nft in
+            // Remove NFTs which have an `error` field
+            if let error = nft.error, error != "" {
+                return false
+            }
+            
+            // Remove NFTs which have invalid URLs
+            guard nft.metadata.image != nil else {
+                return false
+            }
+            guard URL(string: nft.metadata.image!) != nil else {
+                return false
+            }
+            
+            return true
+        }
+        
+        // Remove duplicate NFTs
+        
+        return AlchemyNfts(ownedNfts: filteredNfts, totalCount: filteredNfts.count, blockHash: alchemyNfts.blockHash)
     }
     
     /// Convert Alchemy NFTs to standardize NFTs.
