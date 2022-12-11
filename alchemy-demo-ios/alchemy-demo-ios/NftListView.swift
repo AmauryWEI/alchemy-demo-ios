@@ -9,6 +9,8 @@ import SwiftUI
 
 /// Core view of the application
 struct NftListView: View {
+    @Environment(\.openURL) var openURL
+    
     /// Stored NFTs list
     @ObservedObject var nftList = NftListViewModel()
     
@@ -49,8 +51,14 @@ struct NftListView: View {
                 Text("Enter an ETH wallet address to fetch its NFTs")
             }
             
-            Section{
+            Section {
                 fetchButton
+            }
+            
+            Section {
+                nftsList
+            } header: {
+                Text("Fetched NFTs")
             }
         }
     }
@@ -62,6 +70,17 @@ struct NftListView: View {
                 Spacer()
                 Text("Fetch NFTs")
                 Spacer()
+            }
+        }
+    }
+    
+    /// List of fetched NFTs
+    var nftsList: some View {
+        List{
+            ForEach(nftList.nfts) { nft in
+                NftView(nft: nft).onTapGesture {
+                    openURL(nft.image)
+                }
             }
         }
     }
