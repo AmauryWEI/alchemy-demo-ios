@@ -13,11 +13,37 @@ struct NftView: View {
     let nft: Nft
     
     var body: some View {
-        let stripped_nft_address = nft.contractAddress.replacingOccurrences(of: "0x", with: "")
-        VStack{
-            Text("\(nft.id): \(stripped_nft_address)")
-                .font(.footnote)
+        VStack(alignment: .leading) {
+            contractAddressHeading
+            contractAddressFormatted
+            
+            tokenIdHeading
+            tokenIdFormatted
         }
+    }
+    
+    var contractAddressHeading: some View {
+        Text("Contract Address (hex)")
+            .foregroundColor(.gray)
+            .font(.footnote)
+    }
+    
+    var contractAddressFormatted: some View {
+        Text(nft.contractAddress.dropFirst(2))
+            .font(.footnote)
+    }
+    
+    var tokenIdHeading: some View {
+        Text("Token ID (decimal)")
+            .foregroundColor(.gray)
+            .font(.footnote)
+    }
+    
+    var tokenIdFormatted: some View {
+        guard nft.tokenIdAsUInt != nil else {
+            return Text("Unknown").font(.footnote)
+        }
+        return Text(String(nft.tokenIdAsUInt!)).font(.footnote)
     }
 }
 

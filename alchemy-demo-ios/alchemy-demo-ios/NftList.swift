@@ -16,6 +16,11 @@ struct Nft: Identifiable {
     var tokenId: String
     /// URL to the NFT
     var image: URL
+    
+    /// Token ID of the NFT in the smart contract
+    var tokenIdAsUInt: UInt64? {
+        UInt64(self.tokenId.dropFirst(2), radix: 16)
+    }
 }
 
 /// Storage for a list of NFTs
