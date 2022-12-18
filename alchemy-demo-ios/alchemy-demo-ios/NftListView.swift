@@ -24,12 +24,18 @@ struct NftListView: View {
     
     /// Indicates that a NFTs fetch request is being
     @State private var nftsFetchingInProgress = false
+    
     /// Set to true to show the NFTs fetching failed alert
     @State private var nftsFetchingFailed = false
     /// Alert message in case the NFTs cannot be fetched
     @State private var nftsFetchingFailedMessage: String = ""
     /// Alert title in case the NFTs cannot be fetched
     let failedFetchingAlertTitle: String = "Failed to fetch NFTs"
+    
+    /// Set to true to show the NFT's URL opening failed alert
+    @State private var nftUrlOpeningFailed = false
+    /// Alert title in case the NFT's URL cannot be opened
+    let failedNftUrlOpeningAlertTitle: String = "Failed to open the NFT's URL"
     
     var body: some View {
         VStack {
@@ -87,7 +93,7 @@ struct NftListView: View {
                 Spacer()
             }
         }.alert(failedFetchingAlertTitle, isPresented: $nftsFetchingFailed) {
-            Button("Dismiss", role: .cancel) {
+            Button("OK", role: .cancel) {
                 nftsFetchingFailed = false
             }
         } message: {
@@ -110,7 +116,17 @@ struct NftListView: View {
         List{
             ForEach(nftList.nfts) { nft in
                 NftView(nft: nft).onTapGesture {
-                    openURL(nft.image)
+                    openURL(nft.image) { accepted in
+                        if accepted { return }
+                        print("Failed to open URL associated with NFT \(nft.id)")
+                        nftUrlOpeningFailed = true
+                    }
+                }.alert(failedNftUrlOpeningAlertTitle, isPresented: $nftUrlOpeningFailed) {
+                    Button("OK", role: .cancel) {
+                        nftUrlOpeningFailed = false
+                    }
+                } message: {
+                    Text("This NFT has an invalid or unsupported URL associated to it.")
                 }
             }
         }
