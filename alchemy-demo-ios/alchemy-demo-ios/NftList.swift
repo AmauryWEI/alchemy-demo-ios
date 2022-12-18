@@ -11,7 +11,9 @@ import Foundation
 struct Nft: Identifiable {
     var id: Int
     /// Smart contract address of the NFT
-    var address: String
+    var contractAddress: String
+    /// Token ID of the NFT in the smart contract
+    var tokenId: String
     /// URL to the NFT
     var image: URL
 }

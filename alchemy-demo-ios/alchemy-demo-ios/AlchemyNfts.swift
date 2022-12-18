@@ -18,12 +18,17 @@ struct AlchemyNfts: Codable {
 /// - Warning: More fields exist in the retrieved JSON data, only the relevant ones for this demo have been declared
 struct AlchemyNft: Codable {
     var contract: AlchemyContract
+    var id: AlchemyId
     var metadata: AlchemyMetadata
     var error: String?
 }
 
 struct AlchemyContract: Codable {
     var address: String
+}
+
+struct AlchemyId: Codable {
+    var tokenId: String
 }
 
 struct AlchemyMetadata: Codable {
