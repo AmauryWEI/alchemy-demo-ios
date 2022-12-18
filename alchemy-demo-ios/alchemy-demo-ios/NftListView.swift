@@ -22,6 +22,21 @@ struct NftListView: View {
     /// Set to true to dismiss the keyboard from the ETH address TextField
     @FocusState private var ethAddressIsFocused: Bool
     
+    /// Indicates that a NFTs fetch request is being
+    @State private var nftsFetchingInProgress = false
+    
+    /// Set to true to show the NFTs fetching failed alert
+    @State private var nftsFetchingFailed = false
+    /// Alert message in case the NFTs cannot be fetched
+    @State private var nftsFetchingFailedMessage: String = ""
+    /// Alert title in case the NFTs cannot be fetched
+    let failedFetchingAlertTitle: String = "Failed to fetch NFTs"
+    
+    /// Set to true to show the NFT's URL opening failed alert
+    @State private var nftUrlOpeningFailed = false
+    /// Alert title in case the NFT's URL cannot be opened
+    let failedNftUrlOpeningAlertTitle: String = "Failed to open the NFT's URL"
+    
     var body: some View {
         VStack {
             appTitle
@@ -53,7 +68,7 @@ struct NftListView: View {
             
             Section {
                 fetchButton
-            }
+            }.disabled(ethAddress.isEmpty)
             
             Section {
                 nftsList
@@ -70,9 +85,29 @@ struct NftListView: View {
         Button(action: fetchNfts) {
             HStack{
                 Spacer()
-                Text("Fetch NFTs")
+                if nftsFetchingInProgress {
+                    progressView
+                } else {
+                    Text("Fetch NFTs")
+                }
                 Spacer()
             }
+        }.alert(failedFetchingAlertTitle, isPresented: $nftsFetchingFailed) {
+            Button("OK", role: .cancel) {
+                nftsFetchingFailed = false
+            }
+        } message: {
+            Text(nftsFetchingFailedMessage)
+        }
+    }
+    
+    /// Spinning wheel to show the request progress
+    var progressView: some View {
+        HStack {
+            Spacer()
+            ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+            Spacer()
         }
     }
     
@@ -81,7 +116,17 @@ struct NftListView: View {
         List{
             ForEach(nftList.nfts) { nft in
                 NftView(nft: nft).onTapGesture {
-                    openURL(nft.image)
+                    openURL(nft.image) { accepted in
+                        if accepted { return }
+                        print("Failed to open URL associated with NFT \(nft.id)")
+                        nftUrlOpeningFailed = true
+                    }
+                }.alert(failedNftUrlOpeningAlertTitle, isPresented: $nftUrlOpeningFailed) {
+                    Button("OK", role: .cancel) {
+                        nftUrlOpeningFailed = false
+                    }
+                } message: {
+                    Text("This NFT has an invalid or unsupported URL associated to it.")
                 }
             }
         }
@@ -92,16 +137,36 @@ struct NftListView: View {
         // Dismiss the keyboard of the ETH Address TextField
         ethAddressIsFocused = false
         
+        // Start progress view
+        nftsFetchingInProgress = true
+        
+        // Clear all NFTs currently stored
+        nftList.clearNfts()
+        
         // Create a dedicated Task as fetchNfts() is asynchronous
         Task {
             do {
                 try await nftList.fetchNfts(ethWalletAddress: ethAddress)
+                nftsFetchingInProgress = false
+            } catch FetchNftsError.dummyAlchemyApiKey {
+                nftsFetchingInProgress = false
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Please update ALCHEMY_API_KEY in NftListViewModel.swift"
+            } catch FetchNftsError.invalidUrl {
+                nftsFetchingInProgress = false
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Invalid ALCHEMY_API_KEY or ETH wallet address"
+            } catch FetchNftsError.requestFailed {
+                nftsFetchingInProgress = false
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Request to Alchemy API failed. Potential causes are: no network, invalid ALCHEMY_API_KEY, invalid ETH wallet address"
             } catch let error {
-                print("ERROR: Failed to fetch NFTs: ", error)
+                nftsFetchingInProgress = false
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = error.localizedDescription
             }
         }
     }
-    
 }
 
 struct NftListView_Previews: PreviewProvider {
