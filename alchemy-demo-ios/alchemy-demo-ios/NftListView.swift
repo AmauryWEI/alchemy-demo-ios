@@ -14,8 +14,8 @@ struct NftListView: View {
     /// Stored NFTs list
     @ObservedObject var nftList = NftListViewModel()
     
-    /// Example of an ETH wallet address owning multiple NFTs (Vitalik BUTERIN's address)
-    static let defaultEthAddress = "0xab5801a7d398351b8be11c439e05c5b3259aec9b"
+    /// Example of an ETH wallet address owning multiple NFTs 
+    static let defaultEthAddress = "0x928c2909847B884ba5Dd473568De6382b028F7b8"
     
     /// ETH wallet address (modified by the ethAddressForm)
     @State private var ethAddress: String = defaultEthAddress
