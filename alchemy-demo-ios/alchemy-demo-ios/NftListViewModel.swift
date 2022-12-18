@@ -65,7 +65,7 @@ class NftListViewModel: ObservableObject {
     
     /// Filter invalid NFTs obtained from the Alchemy API.
     /// NFTs considered invalid: `error` field is present, invalid image URL
-    func filterInvalidNfts(alchemyNfts: AlchemyNfts) -> AlchemyNfts {
+    private func filterInvalidNfts(alchemyNfts: AlchemyNfts) -> AlchemyNfts {
         let filteredNfts = alchemyNfts.ownedNfts.filter { nft in
             // Remove NFTs which have an `error` field
             if let error = nft.error, error != "" {
@@ -81,7 +81,7 @@ class NftListViewModel: ObservableObject {
     /// NFTs with an invalid or missing image metadata will be discarded
     /// - Parameter alchemyNfts: Decoded set of NFTs retrieved from the Alchemy API
     /// - Returns: Array of standardized `Nft` struct
-    func standardizeNfts(alchemyNfts: AlchemyNfts) -> [Nft] {
+    private func standardizeNfts(alchemyNfts: AlchemyNfts) -> [Nft] {
         var nfts = [Nft]()
         for (index, nft) in alchemyNfts.ownedNfts.enumerated() {
             // Filter the NFTs without any metadata or invalid URLs (most likely errors)
