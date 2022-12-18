@@ -59,7 +59,7 @@ struct NftListView: View {
                 nftsList
             } header: {
                 if nftList.nfts.count > 0 {
-                    Text("Fetched NFTs")
+                    Text("Fetched NFTs: \(nftList.nfts.count)")
                 }
             }
         }
