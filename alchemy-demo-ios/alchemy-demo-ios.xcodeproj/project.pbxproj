@@ -13,6 +13,7 @@
 		AA06E34E293E5B5500EA87EA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA06E34D293E5B5500EA87EA /* Preview Assets.xcassets */; };
 		AA622D2E293E91C900F89657 /* NftListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA622D2D293E91C900F89657 /* NftListViewModel.swift */; };
 		AA622D30293E920F00F89657 /* NftList.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA622D2F293E920F00F89657 /* NftList.swift */; };
+		AAA68CED294660D00038E932 /* NftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA68CEC294660D00038E932 /* NftView.swift */; };
 		AAD8836629463E6200727A99 /* AlchemyNfts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAD8836529463E6200727A99 /* AlchemyNfts.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		AA06E34D293E5B5500EA87EA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA622D2D293E91C900F89657 /* NftListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftListViewModel.swift; sourceTree = "<group>"; };
 		AA622D2F293E920F00F89657 /* NftList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftList.swift; sourceTree = "<group>"; };
+		AAA68CEC294660D00038E932 /* NftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftView.swift; sourceTree = "<group>"; };
 		AAD8836529463E6200727A99 /* AlchemyNfts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlchemyNfts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,6 +61,7 @@
 			children = (
 				AA06E346293E5B5400EA87EA /* AlchemyDemoApp.swift */,
 				AA06E348293E5B5400EA87EA /* NftListView.swift */,
+				AAA68CEC294660D00038E932 /* NftView.swift */,
 				AA622D2D293E91C900F89657 /* NftListViewModel.swift */,
 				AAD8836529463E6200727A99 /* AlchemyNfts.swift */,
 				AA622D2F293E920F00F89657 /* NftList.swift */,
@@ -151,6 +154,7 @@
 				AA622D2E293E91C900F89657 /* NftListViewModel.swift in Sources */,
 				AAD8836629463E6200727A99 /* AlchemyNfts.swift in Sources */,
 				AA06E347293E5B5400EA87EA /* AlchemyDemoApp.swift in Sources */,
+				AAA68CED294660D00038E932 /* NftView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

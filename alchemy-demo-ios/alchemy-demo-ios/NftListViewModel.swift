@@ -35,7 +35,7 @@ class NftListViewModel: ObservableObject {
     /// - Throws: Errors of type `FetchNftsError`or `DecodingError`
     func fetchNfts(ethWalletAddress: String) async throws {
         // Create the proper URL using the private Alchemy API key and the specified ETH address
-        guard let nftsRequestUrl = URL(string: "https://eth-goerli.g.alchemy.com/v2/\(ALCHEMY_API_KEY)/getNFTs?owner=\(ethWalletAddress)") else { throw FetchNftsError.invalidUrl }
+        guard let nftsRequestUrl = URL(string: "https://eth-mainnet.g.alchemy.com/v2/\(ALCHEMY_API_KEY)/getNFTs?owner=\(ethWalletAddress)&excludeFilters[SPAM,AIRDROPS]") else { throw FetchNftsError.invalidUrl }
         
         // Perform the HTTPS request
         print("INFO: Performing HTTPS GET request: ", nftsRequestUrl.absoluteString)
@@ -48,7 +48,8 @@ class NftListViewModel: ObservableObject {
         print("INFO: NFTs retrieved: ", decodedNfts.totalCount)
         
         // Convert those Alchemy-based NFTs into custom NFT structures
-        let standardizedNfts = standardizeNfts(alchemyNfts: decodedNfts)
+        let filteredAlchemyNfts = filterInvalidNfts(alchemyNfts: decodedNfts)
+        let standardizedNfts = standardizeNfts(alchemyNfts: filteredAlchemyNfts)
         print("INFO: Valid NFTs: ", standardizedNfts.count)
         
         // Update the internal model (from the main thread)
@@ -57,17 +58,31 @@ class NftListViewModel: ObservableObject {
         }
     }
     
+    /// Filter invalid NFTs obtained from the Alchemy API.
+    /// NFTs considered invalid: `error` field is present, invalid image URL
+    func filterInvalidNfts(alchemyNfts: AlchemyNfts) -> AlchemyNfts {
+        let filteredNfts = alchemyNfts.ownedNfts.filter { nft in
+            // Remove NFTs which have an `error` field
+            if let error = nft.error, error != "" {
+                return false
+            }
+            return true
+        }
+        
+        return AlchemyNfts(ownedNfts: filteredNfts, totalCount: filteredNfts.count, blockHash: alchemyNfts.blockHash)
+    }
+    
     /// Convert Alchemy NFTs to standardize NFTs.
     /// NFTs with an invalid or missing image metadata will be discarded
     /// - Parameter alchemyNfts: Decoded set of NFTs retrieved from the Alchemy API
     /// - Returns: Array of standardized `Nft` struct
     func standardizeNfts(alchemyNfts: AlchemyNfts) -> [Nft] {
         var nfts = [Nft]()
-        for nft in alchemyNfts.ownedNfts {
+        for (index, nft) in alchemyNfts.ownedNfts.enumerated() {
             // Filter the NFTs without any metadata or invalid URLs (most likely errors)
             if let image = nft.metadata.image {
                 if let imageUrl = URL(string: image) {
-                    nfts.append(Nft(address: nft.contract.address, image: imageUrl))
+                    nfts.append(Nft(id: index, contractAddress: nft.contract.address, tokenId: nft.id.tokenId, image: imageUrl))
                 }
             }
         }

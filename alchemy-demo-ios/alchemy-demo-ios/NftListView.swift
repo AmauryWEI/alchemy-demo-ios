@@ -9,11 +9,13 @@ import SwiftUI
 
 /// Core view of the application
 struct NftListView: View {
+    @Environment(\.openURL) var openURL
+    
     /// Stored NFTs list
     @ObservedObject var nftList = NftListViewModel()
     
-    /// Example of an ETH wallet address owning multiple NFTs (Vitalik BUTERIN's address)
-    static let defaultEthAddress = "0xab5801a7d398351b8be11c439e05c5b3259aec9b"
+    /// Example of an ETH wallet address owning multiple NFTs
+    static let defaultEthAddress = "0x928c2909847B884ba5Dd473568De6382b028F7b8"
     
     /// ETH wallet address (modified by the ethAddressForm)
     @State private var ethAddress: String = defaultEthAddress
@@ -49,8 +51,16 @@ struct NftListView: View {
                 Text("Enter an ETH wallet address to fetch its NFTs")
             }
             
-            Section{
+            Section {
                 fetchButton
+            }
+            
+            Section {
+                nftsList
+            } header: {
+                if nftList.nfts.count > 0 {
+                    Text("Fetched NFTs: \(nftList.nfts.count)")
+                }
             }
         }
     }
@@ -62,6 +72,17 @@ struct NftListView: View {
                 Spacer()
                 Text("Fetch NFTs")
                 Spacer()
+            }
+        }
+    }
+    
+    /// List of fetched NFTs
+    var nftsList: some View {
+        List{
+            ForEach(nftList.nfts) { nft in
+                NftView(nft: nft).onTapGesture {
+                    openURL(nft.image)
+                }
             }
         }
     }
