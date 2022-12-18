@@ -66,19 +66,8 @@ class NftListViewModel: ObservableObject {
             if let error = nft.error, error != "" {
                 return false
             }
-            
-            // Remove NFTs which have invalid URLs
-            guard nft.metadata.image != nil else {
-                return false
-            }
-            guard URL(string: nft.metadata.image!) != nil else {
-                return false
-            }
-            
             return true
         }
-        
-        // Remove duplicate NFTs
         
         return AlchemyNfts(ownedNfts: filteredNfts, totalCount: filteredNfts.count, blockHash: alchemyNfts.blockHash)
     }
