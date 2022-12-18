@@ -22,6 +22,13 @@ struct NftListView: View {
     /// Set to true to dismiss the keyboard from the ETH address TextField
     @FocusState private var ethAddressIsFocused: Bool
     
+    /// Set to true to show the NFTs fetching failed alert
+    @State private var nftsFetchingFailed = false
+    /// Alert message in case the NFTs cannot be fetched
+    @State private var nftsFetchingFailedMessage: String = ""
+    /// Alert title in case the NFTs cannot be fetched
+    let failedFetchingAlertTitle: String = "Failed to fetch NFTs"
+    
     var body: some View {
         VStack {
             appTitle
@@ -73,6 +80,12 @@ struct NftListView: View {
                 Text("Fetch NFTs")
                 Spacer()
             }
+        }.alert(failedFetchingAlertTitle, isPresented: $nftsFetchingFailed) {
+            Button("Dismiss", role: .cancel) {
+                nftsFetchingFailed = false
+            }
+        } message: {
+            Text(nftsFetchingFailedMessage)
         }
     }
     
@@ -96,12 +109,21 @@ struct NftListView: View {
         Task {
             do {
                 try await nftList.fetchNfts(ethWalletAddress: ethAddress)
+            } catch FetchNftsError.dummyAlchemyApiKey {
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Please update ALCHEMY_API_KEY in NftListViewModel.swift"
+            } catch FetchNftsError.invalidUrl {
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Invalid ALCHEMY_API_KEY or ETH wallet address"
+            } catch FetchNftsError.requestFailed {
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = "Request to Alchemy API failed. Potential causes are: no network, invalid ALCHEMY_API_KEY, invalid ETH wallet address"
             } catch let error {
-                print("ERROR: Failed to fetch NFTs: ", error)
+                nftsFetchingFailed = true
+                nftsFetchingFailedMessage = error.localizedDescription
             }
         }
     }
-    
 }
 
 struct NftListView_Previews: PreviewProvider {

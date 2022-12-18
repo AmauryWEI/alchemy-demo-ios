@@ -7,15 +7,15 @@
 
 import SwiftUI
 
+/// Custom Errors thrown by `fetchNfts()`
+enum FetchNftsError: Error {
+    case dummyAlchemyApiKey
+    case invalidUrl
+    case requestFailed
+}
+
 /// ViewModel to store a list of NFTs
 class NftListViewModel: ObservableObject {
-    
-    /// Custom Errors thrown by `fetchNfts()`
-    enum FetchNftsError: Error {
-        case invalidUrl
-        case requestFailed
-    }
-    
     /// Replace with your own ALCHEMY_API_KEY
     private let ALCHEMY_API_KEY = "your_key_here"
     private let HTTP_STATUS_CODE_OK: Int = 200
@@ -34,6 +34,11 @@ class NftListViewModel: ObservableObject {
     /// - Parameter ethWalletAddress: ETH wallet address to fetch the NFTs from
     /// - Throws: Errors of type `FetchNftsError`or `DecodingError`
     func fetchNfts(ethWalletAddress: String) async throws {
+        // Making sure you have updated the `ALCHEMY_API`KEY` with your own
+        guard ALCHEMY_API_KEY != "your_key_here" else {
+            throw FetchNftsError.dummyAlchemyApiKey
+        }
+        
         // Create the proper URL using the private Alchemy API key and the specified ETH address
         guard let nftsRequestUrl = URL(string: "https://eth-mainnet.g.alchemy.com/v2/\(ALCHEMY_API_KEY)/getNFTs?owner=\(ethWalletAddress)&excludeFilters[SPAM,AIRDROPS]") else { throw FetchNftsError.invalidUrl }
         
