@@ -60,7 +60,7 @@ struct NftListView: View {
             
             Section {
                 fetchButton
-            }
+            }.disabled(ethAddress.isEmpty)
             
             Section {
                 nftsList
