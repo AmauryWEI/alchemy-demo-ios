@@ -124,6 +124,9 @@ struct NftListView: View {
         // Start progress view
         nftsFetchingInProgress = true
         
+        // Clear all NFTs currently stored
+        nftList.clearNfts()
+        
         // Create a dedicated Task as fetchNfts() is asynchronous
         Task {
             do {

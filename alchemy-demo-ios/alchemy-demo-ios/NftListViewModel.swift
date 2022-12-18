@@ -63,6 +63,11 @@ class NftListViewModel: ObservableObject {
         }
     }
     
+    /// Clear all stored NFTs
+    func clearNfts() {
+        model.setNfts([])
+    }
+    
     /// Filter invalid NFTs obtained from the Alchemy API.
     /// NFTs considered invalid: `error` field is present, invalid image URL
     private func filterInvalidNfts(alchemyNfts: AlchemyNfts) -> AlchemyNfts {
