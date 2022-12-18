@@ -89,11 +89,11 @@ class NftListViewModel: ObservableObject {
     /// - Returns: Array of standardized `Nft` struct
     func standardizeNfts(alchemyNfts: AlchemyNfts) -> [Nft] {
         var nfts = [Nft]()
-        for nft in alchemyNfts.ownedNfts {
+        for (index, nft) in alchemyNfts.ownedNfts.enumerated() {
             // Filter the NFTs without any metadata or invalid URLs (most likely errors)
             if let image = nft.metadata.image {
                 if let imageUrl = URL(string: image) {
-                    nfts.append(Nft(address: nft.contract.address, image: imageUrl))
+                    nfts.append(Nft(id: index, address: nft.contract.address, image: imageUrl))
                 }
             }
         }

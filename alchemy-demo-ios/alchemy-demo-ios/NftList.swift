@@ -9,7 +9,7 @@ import Foundation
 
 /// Standardized struct for a single NFT
 struct Nft: Identifiable {
-    var id: String { address }
+    var id: Int
     /// Smart contract address of the NFT
     var address: String
     /// URL to the NFT
