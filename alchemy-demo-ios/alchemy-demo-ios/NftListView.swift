@@ -14,7 +14,7 @@ struct NftListView: View {
     /// Stored NFTs list
     @ObservedObject var nftList = NftListViewModel()
     
-    /// Example of an ETH wallet address owning multiple NFTs 
+    /// Example of an ETH wallet address owning multiple NFTs
     static let defaultEthAddress = "0x928c2909847B884ba5Dd473568De6382b028F7b8"
     
     /// ETH wallet address (modified by the ethAddressForm)
@@ -58,7 +58,9 @@ struct NftListView: View {
             Section {
                 nftsList
             } header: {
-                Text("Fetched NFTs")
+                if nftList.nfts.count > 0 {
+                    Text("Fetched NFTs")
+                }
             }
         }
     }
